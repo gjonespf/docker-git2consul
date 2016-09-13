@@ -4,9 +4,13 @@
 if [ -n "$CFG" ]
 then
   echo "$CFG" > /etc/git2consul.d/config.json
-else
-  sed -i -e 's/GITREPO/$GIT_REPO/' -e 's/NAMESPACE/$NAMESPACE/' /etc/git2consul.d/config.json
 fi
+
+#echo "REPO: $GIT_REPO"
+sed -i -e "s|GIT_REPO|$GIT_REPO|" /etc/git2consul.d/config.json
+#cat /etc/git2consul.d/config.json
+sed -i -e "s|NAMESPACE|$NAMESPACE|" /etc/git2consul.d/config.json
+#cat /etc/git2consul.d/config.json
 
 if [ -n "$ID" ]
 then
@@ -16,6 +20,8 @@ then
   echo -e "StrictHostKeyChecking no\nUserKnownHostsFile=/dev/null" > ~/.ssh/config
   chmod 700 -R ~/.ssh
 fi
-echo -e "$(date) starting git2consul. found these env vars: \nCFG:$CFG \nIDPUB:$IDPUB \nCONSUL_ENDPOINT:$CONSUL_ENDPOINT \nCONSUL_PORT:$CONSUL_PORT"
-exec /usr/bin/node /usr/lib/node_modules/git2consul $@
+echo -e "$(date) starting git2consul. found these env vars: \nCFG:$CFG \nGIT_REPO:$GIT_REPO \nIDPUB:$IDPUB \nCONSUL_ENDPOINT:$CONSUL_ENDPOINT \nCONSUL_PORT:$CONSUL_PORT"
+#cat /etc/git2consul.d/config.json
+# 
+exec /usr/bin/node /usr/lib/node_modules/git2consul  --config-file /etc/git2consul.d/config.json $@
 
