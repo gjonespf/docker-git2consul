@@ -3,6 +3,7 @@
  "repos" : [{
    "name" : "NAMESPACE",
    "url" : "GIT_REPO",
+   "source_root" : "GIT_SOURCEROOT",
    "branches" : ["master"],
    "hooks": [{
      "type" : "polling",
