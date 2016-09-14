@@ -28,6 +28,8 @@ then
   echo $IDPUB > ~/.ssh/id_rsa.pub
   echo -e "StrictHostKeyChecking no\nUserKnownHostsFile=/dev/null" > ~/.ssh/config
   chmod 700 -R ~/.ssh
+  eval "$(ssh-agent -s)"
+  ssh-add ~/.ssh/id_rsa
   ssh-add -l
 fi
 echo -e "$(date) starting git2consul. found these env vars: \nCFG:$CFG \nGIT_REPO:$GIT_REPO \nIDPUB:$IDPUB \nCONSUL_ENDPOINT:$CONSUL_ENDPOINT \nCONSUL_PORT:$CONSUL_PORT"
