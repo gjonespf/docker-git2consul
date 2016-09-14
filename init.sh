@@ -23,18 +23,18 @@ if [ -n "$ID" ]
 then
   echo "Adding SSH Keys to agent"
   mkdir ~/.ssh
-#  echo $ID   |base64 -d > ~/.ssh/id_rsa
-#  echo $IDPUB|base64 -d > ~/.ssh/id_rsa.pub
-  echo $ID   > ~/.ssh/id_rsa
-  echo $IDPUB > ~/.ssh/id_rsa.pub
-  echo -e "StrictHostKeyChecking no\nUserKnownHostsFile=/dev/null" > ~/.ssh/config
-  chmod 700 -R ~/.ssh
+  echo "$ID"   > ~/.ssh/id_rsa_git2consul
+  echo "$IDPUB" > ~/.ssh/id_rsa_git2consul.pub
+
   eval "$(ssh-agent -s)"
-  ssh-add ~/.ssh/id_rsa
-  ssh-add -l
+  chmod 600 -R ~/.ssh/id_rsa_git2consul
+  ssh-add ~/.ssh/id_rsa_git2consul
+  echo -e "StrictHostKeyChecking no\nUserKnownHostsFile=/dev/null" > ~/.ssh/config
+  echo -e "Host git2consul\n\tIdentityFile ~/.ssh/id_rsa_git2consul" >> ~/.ssh/config
 fi
 echo -e "$(date) starting git2consul. found these env vars: \nCFG:$CFG \nGIT_REPO:$GIT_REPO \nIDPUB:$IDPUB \nCONSUL_ENDPOINT:$CONSUL_ENDPOINT \nCONSUL_PORT:$CONSUL_PORT"
 #cat /etc/git2consul.d/config.json
 # 
 exec /usr/bin/node /usr/lib/node_modules/git2consul  --config-file /etc/git2consul.d/config.json $@
+
 
