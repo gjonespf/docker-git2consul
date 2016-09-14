@@ -21,6 +21,7 @@ fi
 
 if [ -n "$ID" ]
 then
+  echo "Adding SSH Keys to agent"
   mkdir ~/.ssh
 #  echo $ID   |base64 -d > ~/.ssh/id_rsa
 #  echo $IDPUB|base64 -d > ~/.ssh/id_rsa.pub
