@@ -27,24 +27,29 @@ This will download the repo https://github.com/myuser/myrepo.git and feed it int
 ```
 ID=$(cat ~/.ssh/id_rsa)
 IDPUB=$(cat ~/.ssh/id_rsa.pub)
+CFG='{"version":"1.0","repos":[{"name":"config","url":"git@github.com:myrepo/configs.git","source_root":"dev","mountpoint":"","branches":["master"],"include_branch_name":false,"hooks":[{"type":"polling","interval":"1"}]}]}'
+docker run \
+        --env CONSUL_ENDPOINT=192.168.0.111 \
+        --env CONSUL_PORT=8500 \
+        --env ID="$ID" \
+        --env IDPUB="$IDPUB" \
+        --env CFG="$CFG" \
+        gavinjonespf/docker-git2consul
 ```
 OR
 ```
 IDENC=$(cat ~/.ssh/id_rsa|base64)
 IDPUBENC=$(cat ~/.ssh/id_rsa.pub|base64)
-```
-THEN
-
-```
 CFG='{"version":"1.0","repos":[{"name":"config","url":"git@github.com:myrepo/configs.git","source_root":"dev","mountpoint":"","branches":["master"],"include_branch_name":false,"hooks":[{"type":"polling","interval":"1"}]}]}'
 docker run \
         --env CONSUL_ENDPOINT=192.168.0.111 \
         --env CONSUL_PORT=8500 \
-        OR --env ID="$ID" --env IDPUB="$IDPUB"\
-        OR --env IDENC="$IDENC" --env IDPUBENC="$IDPUBENC"\
+        --env IDENC="$IDENC" \
+        --env IDPUBENC="$IDPUBENC" \
         --env CFG="$CFG" \
         gavinjonespf/docker-git2consul
 ```
+
 This shows how to manually specify your own config and use ssh keys to connect to the git repo. 
 
 
